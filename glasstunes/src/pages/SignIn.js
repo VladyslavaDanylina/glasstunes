@@ -3,12 +3,16 @@ import { useNavigate } from "react-router-dom";
 import AuthSocialButtons from "../components/AuthSocialButtons";
 import "./SignIn.css";
 
-
-
 export default function SignIn() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  // Вот обработчик для соц. логина:
+  const handleSocialLoginSuccess = () => {
+    // если у тебя в App есть глобальный setIsLoggedIn, вызови его через контекст/пропсы (или set в App)
+    navigate("/home");
+  };
 
   return (
     <div className="auth-screen">
@@ -33,15 +37,15 @@ export default function SignIn() {
           Sign in
         </button>
         <div className="text-link">
-  <button
-    type="button"
-    className="link-btn"
-    onClick={() => {/* showForgotPasswordModal(); */}}
-    style={{ background: "none", border: "none", color: "inherit", cursor: "pointer", padding: 0, font: "inherit" }}
-  >
-    Forgot your password?
-  </button>
-</div>
+          <button
+            type="button"
+            className="link-btn"
+            onClick={() => {/* showForgotPasswordModal(); */}}
+            style={{ background: "none", border: "none", color: "inherit", cursor: "pointer", padding: 0, font: "inherit" }}
+          >
+            Forgot your password?
+          </button>
+        </div>
 
         {/* Разделитель */}
         <div className="divider-row">
@@ -49,7 +53,8 @@ export default function SignIn() {
           <span className="or-line"><p className="continue">or continue with</p></span>
           <div className="divider-horizontal" />
         </div>
-        <AuthSocialButtons />
+        {/* Вот сюда передай обработчик */}
+        <AuthSocialButtons onSuccess={handleSocialLoginSuccess} />
         <div className="text-link-bottom">
           Need an account?{" "}
           <span onClick={() => navigate("/signup")}>Register</span>

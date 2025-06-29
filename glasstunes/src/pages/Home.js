@@ -12,7 +12,7 @@ export default function Home({ userProfile }) {
           <span className="bell-icon">🔔</span>
           <img
             className="dashboard-avatar"
-            src={userProfile?.avatar || "/default-avatar.png"}
+            src={userProfile?.avatar || "/avatar1.jpg"}
             alt="profile"
           />
         </div>

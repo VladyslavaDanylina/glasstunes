@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HashRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import AuthModal from "./components/AuthModal";
@@ -23,6 +23,17 @@ function App({ currentPath }) {
   // Тут не вызывай useNavigate!
   // Перенеси navigate в нужный компонент
 
+  useEffect(() => {
+    async function checkSpotifyAuth() {
+      const token = await Spotify.getAccessToken();
+      if (token) {
+        setLoggedIn(true);
+        const profile = await Spotify.getUserProfile?.();
+        setUserProfile(profile);
+      }
+    }
+    checkSpotifyAuth();
+  }, []);
   const handleShowAuthModal = () => setAuthModalOpen(true);
 
   const handleLogout = () => {
