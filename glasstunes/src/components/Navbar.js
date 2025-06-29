@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Recommendations from "./pages/Recommendations";
+//import Recommendations from "./pages/Recommendations";
 
 export default function Navbar() {
   return (

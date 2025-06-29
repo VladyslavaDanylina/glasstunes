@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import { HashRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import AuthModal from "./components/AuthModal";
+import Welcome from "./pages/Welcome";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
-import Recommendations from "./pages/Recommendations";
 import ProfilePage from "./pages/ProfilePage";
 import NotFound from "./pages/NotFound";
 import Spotify from "./services/Spotify";
 
-// Обёртка чтобы использовать useLocation
 function AppWrapper() {
   const location = useLocation();
   return <App currentPath={location.pathname} />;
@@ -27,12 +28,14 @@ function App({ currentPath }) {
     }
   }, []);
 
-  const handleLogin = () => setAuthModalOpen(true);
+  const handleShowAuthModal = () => setAuthModalOpen(true);
+
   const handleLogout = () => {
     Spotify.logout();
     setLoggedIn(false);
     setUserProfile(null);
   };
+
   const handleAuthSuccess = async () => {
     setAuthModalOpen(false);
     setLoggedIn(true);
@@ -42,42 +45,54 @@ function App({ currentPath }) {
 
   return (
     <>
-      <Navbar
-        isLoggedIn={isLoggedIn}
-        onLogin={handleLogin}
-        onLogout={handleLogout}
-        userProfile={userProfile}
-      />
+      {/* Navbar показываем только если не на welcome/signin/signup */}
+      { !["/", "/signin", "/signup"].includes(currentPath) &&
+        <Navbar
+          isLoggedIn={isLoggedIn}
+          onLogin={handleShowAuthModal}
+          onLogout={handleLogout}
+          userProfile={userProfile}
+        />
+      }
+      {/* Модальное окно для Spotify (если нужно) */}
       <AuthModal
         isOpen={isAuthModalOpen}
         onClose={() => setAuthModalOpen(false)}
         onAuthSuccess={handleAuthSuccess}
       />
       <Routes>
+        {/* Welcome-экран всегда доступен */}
+        <Route path="/" element={<Welcome />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
+
+        {/* Основные страницы — только после входа */}
         <Route
-          path="/"
-          element={<Home isLoggedIn={isLoggedIn} userProfile={userProfile} />}
+          path="/home"
+          element={
+            isLoggedIn
+              ? <Home isLoggedIn={isLoggedIn} userProfile={userProfile} />
+              : <Navigate to="/" />
+          }
         />
-        <Route
-          path="/recommendations"
-          element={<Recommendations />}
-        />
+        
         <Route
           path="/profile"
           element={
-            isLoggedIn ? (
-              <ProfilePage userProfile={userProfile} onLogout={handleLogout} />
-            ) : (
-              <Navigate to="/" />
-            )
+            isLoggedIn
+              ? <ProfilePage userProfile={userProfile} />
+              : <Navigate to="/" />
           }
         />
         <Route path="*" element={<NotFound />} />
       </Routes>
 
-      {/* Не показывать профиль и выход на странице плеера */}
-      {currentPath !== "/player" && isLoggedIn && (
-        <div style={{ position: "fixed", top: 16, right: 16 }}>
+      {/* Иконка профиля + Log out (на всех, кроме welcome/signin/signup и плеера) */}
+      { !["/", "/signin", "/signup", "/player"].includes(currentPath)
+          && isLoggedIn && (
+        <div style={{
+          position: "fixed", top: 16, right: 16, display: "flex", alignItems: "center", gap: 12, zIndex: 1000
+        }}>
           <img
             src={userProfile?.avatar}
             alt="avatar"
