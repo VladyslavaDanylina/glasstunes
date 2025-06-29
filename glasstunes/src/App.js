@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { HashRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import AuthModal from "./components/AuthModal";
@@ -20,13 +20,8 @@ function App({ currentPath }) {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
 
-  useEffect(() => {
-    const token = Spotify.getAccessToken();
-    if (token) {
-      setLoggedIn(true);
-      Spotify.getUserProfile().then(setUserProfile);
-    }
-  }, []);
+  // Тут не вызывай useNavigate!
+  // Перенеси navigate в нужный компонент
 
   const handleShowAuthModal = () => setAuthModalOpen(true);
 
@@ -36,16 +31,17 @@ function App({ currentPath }) {
     setUserProfile(null);
   };
 
+  // После авторизации можешь делать navigate("/home") внутри компонента авторизации!
   const handleAuthSuccess = async () => {
     setAuthModalOpen(false);
     setLoggedIn(true);
     const profile = await Spotify.getUserProfile();
     setUserProfile(profile);
+    // navigate("/home") ДОЛЖЕН БЫТЬ В КОМПОНЕНТЕ!
   };
 
   return (
     <>
-      {/* Navbar показываем только если не на welcome/signin/signup */}
       { !["/", "/signin", "/signup"].includes(currentPath) &&
         <Navbar
           isLoggedIn={isLoggedIn}
@@ -54,19 +50,15 @@ function App({ currentPath }) {
           userProfile={userProfile}
         />
       }
-      {/* Модальное окно для Spotify (если нужно) */}
       <AuthModal
         isOpen={isAuthModalOpen}
         onClose={() => setAuthModalOpen(false)}
         onAuthSuccess={handleAuthSuccess}
       />
       <Routes>
-        {/* Welcome-экран всегда доступен */}
         <Route path="/" element={<Welcome />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
-
-        {/* Основные страницы — только после входа */}
         <Route
           path="/home"
           element={
@@ -75,7 +67,6 @@ function App({ currentPath }) {
               : <Navigate to="/" />
           }
         />
-        
         <Route
           path="/profile"
           element={
@@ -86,8 +77,6 @@ function App({ currentPath }) {
         />
         <Route path="*" element={<NotFound />} />
       </Routes>
-
-      {/* Иконка профиля + Log out (на всех, кроме welcome/signin/signup и плеера) */}
       { !["/", "/signin", "/signup", "/player"].includes(currentPath)
           && isLoggedIn && (
         <div style={{
