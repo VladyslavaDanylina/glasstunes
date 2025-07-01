@@ -1,28 +1,130 @@
-.dashboard-container { background: #111; min-height: 100vh; padding-bottom: 64px; color: #fff; }
-.dashboard-header { display: flex; justify-content: space-between; align-items: center; padding: 30px 16px 0 16px; }
-.dashboard-greeting { font-size: 20px; font-weight: 600; }
-.dashboard-icons { display: flex; align-items: center; gap: 16px; }
-.dashboard-avatar { width: 36px; height: 36px; border-radius: 50%; }
-.bell-icon { font-size: 20px; }
-.dashboard-section { margin-top: 38px; padding: 0 16px; }
-.dashboard-section-title { font-size: 26px; font-weight: 700; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; }
-.dashboard-viewall-btn { font-size: 15px; background: #262645; color: #fff; border: none; border-radius: 22px; padding: 4px 24px; cursor: pointer; }
-.dashboard-playlists-row { display: flex; gap: 16px; }
-.dashboard-card { width: 200px; height: 130px; border-radius: 18px; position: relative; overflow: hidden; box-shadow: 0 3px 14px rgba(10,10,30,0.23); }
-.dashboard-card-img { width: 100%; height: 100%; object-fit: cover; }
-.dashboard-card-overlay { position: absolute; bottom: 0; left: 0; width: 100%; background: rgba(50,23,70,0.47); padding: 18px 15px; }
-.dashboard-card-subtitle { color: #fed6ff; font-weight: 600; font-size: 18px; }
-.dashboard-card-title { color: #fff; font-size: 22px; font-weight: 700; }
-.dashboard-songs-list { margin-top: 20px; }
-.dashboard-song-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; }
-.dashboard-song-avatar { width: 48px; height: 48px; border-radius: 12px; object-fit: cover; }
-.dashboard-song-info { flex: 1; }
-.dashboard-song-name { font-size: 18px; font-weight: 600; }
-.dashboard-song-artist { font-size: 15px; opacity: 0.82; }
-.dashboard-song-play { font-size: 24px; opacity: 0.66; cursor: pointer; }
-.dashboard-bottom-nav { position: fixed; left: 0; right: 0; bottom: 0; background: #1a1a24; height: 58px; display: flex; justify-content: space-around; align-items: center; z-index: 100; }
-.nav-icon { font-size: 30px; opacity: 0.85; }
-.nav-icon.active { color: #b18cff; opacity: 1; }
-.dashboard-bottom-nav a { color: #fff; text-decoration: none; }
-.dashboard-bottom-nav a:hover { color: #b18cff; }
-.dashboard-bottom-nav a:focus { color: #b18cff; }
+.dashboard-container {
+  background: #000;
+  min-height: 100vh;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  padding-bottom: 80px; /* для нижней навигации */
+}
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 24px 8px 24px;
+}
+.dashboard-greeting {
+  font-size: 1.2rem;
+}
+.dashboard-icons {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.dashboard-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+}
+.dashboard-section {
+  margin: 18px 24px;
+}
+.dashboard-section-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.dashboard-viewall-btn {
+  background: #222;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 6px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.dashboard-playlists-row {
+  display: flex;
+  gap: 18px;
+  margin-bottom: 10px;
+}
+.dashboard-card {
+  position: relative;
+  width: 190px;
+  height: 130px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #111;
+  cursor: pointer;
+  transition: box-shadow .2s;
+}
+.dashboard-card:hover {
+  box-shadow: 0 2px 24px 0 #5e3ed5cc;
+}
+.dashboard-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.dashboard-card-overlay {
+  position: absolute;
+  bottom: 10px;
+  left: 16px;
+  color: #fff;
+  z-index: 1;
+}
+.dashboard-card-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+.dashboard-card-subtitle {
+  font-size: .95rem;
+  color: #cfc6fa;
+  font-weight: 600;
+}
+.dashboard-songs-list {
+  margin-top: 8px;
+}
+.dashboard-song-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 0;
+  border-radius: 12px;
+  transition: background .1s;
+  cursor: pointer;
+}
+.dashboard-song-row:hover {
+  background: #1c1c28;
+}
+.dashboard-song-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+.dashboard-song-info {
+  flex: 1;
+}
+.dashboard-song-name {
+  font-weight: 600;
+  font-size: 1.08rem;
+}
+.dashboard-song-artist {
+  font-size: .98rem;
+  color: #c9c6ca;
+}
+.dashboard-song-play {
+  font-size: 1.3rem;
+  margin-left: 8px;
+}
+.dashboard-song-like {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin-right: 10px;
+}

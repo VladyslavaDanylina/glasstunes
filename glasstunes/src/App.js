@@ -6,6 +6,11 @@ import Welcome from "./pages/Welcome";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
+import Search from "./pages/Search";
+import Library from "./pages/Library";
+import SongPage from "./pages/SongPage";
+import AlbumPage from "./pages/AlbumPage";
+import ArtistPage from "./pages/ArtistPage";
 import ProfilePage from "./pages/ProfilePage";
 import NotFound from "./pages/NotFound";
 import Spotify from "./services/Spotify";
@@ -86,6 +91,11 @@ function App({ currentPath }) {
               : <Navigate to="/" />
           }
         />
+          <Route path="/search" element={<Search />} />
+  <Route path="/library" element={<Library />} />
+    <Route path="/song/:songId" element={<SongPage />} />
+  <Route path="/album/:albumId" element={<AlbumPage />} />
+  <Route path="/artist/:artistId" element={<ArtistPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       { !["/", "/signin", "/signup", "/player"].includes(currentPath)

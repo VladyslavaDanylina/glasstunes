@@ -1,0 +1,48 @@
+.songpage-container {
+  background: #000;
+  min-height: 100vh;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  padding-bottom: 80px;
+}
+.songpage-cover {
+  height: 52vw;
+  max-height: 320px;
+  background-size: cover;
+  background-position: center;
+}
+.songpage-content {
+  padding: 30px 24px 10px 24px;
+}
+.songpage-content h1 {
+  font-size: 2.1rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.song-artist {
+  font-size: 1.1rem;
+  color: #b9aefc;
+  margin-bottom: 22px;
+  cursor: pointer;
+}
+.song-progress-bar {
+  height: 4px;
+  background: #444;
+  border-radius: 2px;
+  margin-bottom: 12px;
+}
+.song-controls {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.play-btn {
+  background: #6c3efe;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 52px;
+  height: 52px;
+  font-size: 1.7rem;
+  cursor: pointer;
+}

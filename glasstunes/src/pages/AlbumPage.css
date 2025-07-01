@@ -1,0 +1,49 @@
+.albumpage-container {
+  background: #000;
+  min-height: 100vh;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  padding-bottom: 80px;
+}
+.albumpage-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 0 10px 0;
+}
+.albumpage-cover {
+  width: 210px;
+  height: 210px;
+  border-radius: 20px;
+  object-fit: cover;
+  margin-bottom: 18px;
+}
+.albumpage-artist {
+  color: #bbb8ff;
+  margin-bottom: 14px;
+  cursor: pointer;
+}
+.albumpage-actions {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+.albumpage-tracklist {
+  margin: 0 24px;
+}
+.track-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid #1c1c29;
+  cursor: pointer;
+}
+.track-title {
+  font-weight: 600;
+}
+.track-more {
+  font-size: 1.5rem;
+  color: #bbb;
+  margin-left: 10px;
+}

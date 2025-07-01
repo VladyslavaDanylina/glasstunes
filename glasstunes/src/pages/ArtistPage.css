@@ -1,0 +1,55 @@
+.artistpage-container {
+  background: #000;
+  min-height: 100vh;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  padding-bottom: 80px;
+}
+.artistpage-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 0 16px 0;
+}
+.artistpage-img {
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.artistpage-listeners {
+  color: #bdbbfc;
+  margin-bottom: 12px;
+}
+.artist-like-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #fff;
+  cursor: pointer;
+}
+.artistpage-top-hits {
+  margin: 24px;
+}
+.hit-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+.hit-img {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  margin-right: 14px;
+}
+.hit-info {
+  flex: 1;
+}
+.hit-title {
+  font-weight: 600;
+}
+.hit-like {
+  font-size: 1.25rem;
+  color: #bdbbfc;
+}

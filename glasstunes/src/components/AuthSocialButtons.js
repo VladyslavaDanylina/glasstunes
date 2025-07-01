@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import "./AuthSocialButtons.css"; // стили для кнопок соц. авторизации
 import Spotify from "../services/Spotify";
 
 export default function AuthSocialButtons({ onSuccess }) {

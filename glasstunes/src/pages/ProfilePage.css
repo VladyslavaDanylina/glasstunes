@@ -1,0 +1,85 @@
+.profile-container {
+  background: #000;
+  min-height: 100vh;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  padding-bottom: 80px;
+}
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 32px;
+  margin-bottom: 12px;
+}
+.profile-avatar {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.profile-name {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-top: 12px;
+  margin-bottom: 8px;
+}
+.edit-profile-btn {
+  background: #222;
+  color: #fff;
+  border: none;
+  border-radius: 18px;
+  padding: 8px 26px;
+  margin-bottom: 8px;
+  font-size: 1.07rem;
+  cursor: pointer;
+}
+.profile-stats {
+  color: #b6b2d2;
+  margin-bottom: 18px;
+  font-size: 1.06rem;
+}
+.profile-tabs {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 24px;
+  margin-bottom: 16px;
+}
+.tab {
+  color: #fff;
+  opacity: .55;
+  font-weight: 600;
+  padding-bottom: 6px;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+}
+.tab.active {
+  opacity: 1;
+  border-bottom: 2px solid #fff;
+}
+.profile-playlists-list {
+  margin: 0 24px;
+}
+.profile-playlist-row {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #181828;
+  cursor: pointer;
+}
+.profile-playlist-img {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  margin-right: 14px;
+}
+.profile-playlist-info {
+  flex: 1;
+}
+.profile-playlist-title {
+  font-weight: 600;
+}
+.profile-row-arrow {
+  font-size: 1.5rem;
+  color: #928fe3;
+}
