@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import BottomNav from "../components/BottomNav";
 import Spotify from "../services/Spotify";
+import DashboardCard from "../components/DashboardCard";
 import "./Home.css";
 
 export default function Home({ userProfile }) {
@@ -28,7 +29,7 @@ export default function Home({ userProfile }) {
       setCategories(cats);
       // Fetch playlists for each category (only first 3 for demo)
       for (const c of cats.slice(0, 3)) {
-        Spotify.getPlaylistsByCategory(c.id).then(pls => {
+        Spotify.getCategoryPlaylists(c.id).then(pls => {
           setCategoryPlaylists(prev => ({ ...prev, [c.id]: pls }));
         });
       }
@@ -83,6 +84,9 @@ export default function Home({ userProfile }) {
       <div className="dashboard-section">
         <div className="dashboard-section-title">
           For you
+          <button className="dashboard-viewall-btn" onClick={() => navigate("/featured")}>
+            View all
+          </button>
         </div>
         <div className="dashboard-playlists-row">
           {featured.length === 0 ? (
@@ -106,6 +110,9 @@ export default function Home({ userProfile }) {
         <div className="dashboard-section" key={cat.id}>
           <div className="dashboard-section-title">
             {cat.name}
+            <button className="dashboard-viewall-btn" onClick={() => navigate(`/category/${cat.id}`)}>
+  View all
+</button>
           </div>
           <div className="dashboard-playlists-row">
             {(categoryPlaylists[cat.id] || []).slice(0, 3).map(pl => (
@@ -126,14 +133,3 @@ export default function Home({ userProfile }) {
   );
 }
 
-function DashboardCard({ title, subtitle, img, onClick }) {
-  return (
-    <div className="dashboard-card" onClick={onClick} style={{ cursor: "pointer" }}>
-      <img src={img} alt={title} className="dashboard-card-img" />
-      <div className="dashboard-card-overlay">
-        <div className="dashboard-card-subtitle">{subtitle}</div>
-        <div className="dashboard-card-title">{title}</div>
-      </div>
-    </div>
-  );
-}

@@ -14,6 +14,9 @@ import ArtistPage from "./pages/ArtistPage";
 import ProfilePage from "./pages/ProfilePage";
 import NotFound from "./pages/NotFound";
 import Spotify from "./services/Spotify";
+import LibraryPage from "./pages/LibraryPage";
+import FeaturedPage from "./pages/FeaturedPage";
+import CategoryPage from "./pages/CategoryPage";
 
 function AppWrapper() {
   const location = useLocation();
@@ -83,6 +86,9 @@ function App({ currentPath }) {
               : <Navigate to="/" />
           }
         />
+        <Route path="/library" element={<LibraryPage />} />
+<Route path="/featured" element={<FeaturedPage />} />
+<Route path="/category/:id" element={<CategoryPage />} />
         <Route
           path="/profile"
           element={

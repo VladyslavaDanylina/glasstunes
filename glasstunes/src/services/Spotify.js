@@ -156,7 +156,7 @@ async getCategories() {
 },
 
 
-async getPlaylistsByCategory(categoryId) {   // <---- rename here
+async getCategoryPlaylists(categoryId) {   // <---- rename here
   const token = await this.getAccessToken();
   if (!token || !categoryId) return [];
   const response = await fetch(`https://api.spotify.com/v1/browse/categories/${categoryId}/playlists`, {
