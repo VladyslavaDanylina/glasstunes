@@ -99,21 +99,75 @@ const Spotify = {
     return cachedUserId;
   },
 
-  async getUserPlaylists() {
-    const token = await this.getAccessToken();
-    const userId = await this.getCurrentUserId();
-    if (!token || !userId) return [];
+async getUserPlaylists() {
+  const token = await this.getAccessToken();
+  if (!token) return [];
+  const response = await fetch("https://api.spotify.com/v1/me/playlists", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!response.ok) {
+    console.error("Failed to fetch playlists", response.status);
+    return [];
+  }
+  const json = await response.json();
+  return (json.items || []).map(p => ({
+    playlistId: p.id,
+    playlistName: p.name,
+    img: p.images?.[0]?.url,
+    totalTracks: p.tracks?.total,
+    description: p.description,
+    owner: p.owner?.display_name,
+  }));
+},
 
-    const response = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+// 1. Featured ("Made For You") playlists
+async getFeaturedPlaylists() {
+  const token = await this.getAccessToken();
+  if (!token) return [];
+  const res = await fetch("https://api.spotify.com/v1/browse/featured-playlists?country=US&limit=6", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  const data = await res.json();
+  return (data.playlists?.items || []).map(p => ({
+    playlistId: p.id,
+    playlistName: p.name,
+    img: p.images?.[0]?.url,
+    description: p.description,
+    owner: p.owner?.display_name,
+  }));
+},
 
-    const json = await response.json();
-    return (json.items || []).map(p => ({
-      playlistName: p.name,
-      playlistId: p.id,
-    }));
-  },
+// 2. Categories list
+async getCategories() {
+  const token = await this.getAccessToken();
+  if (!token) return [];
+  const res = await fetch("https://api.spotify.com/v1/browse/categories?country=US&limit=8", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  const data = await res.json();
+  return (data.categories?.items || []).map(c => ({
+    id: c.id,
+    name: c.name,
+    img: c.icons?.[0]?.url,
+  }));
+},
+
+
+async getPlaylistsByCategory(categoryId) {
+  const token = await this.getAccessToken();
+  if (!token) return [];
+  const res = await fetch(`https://api.spotify.com/v1/browse/categories/${categoryId}/playlists?country=US&limit=5`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  const data = await res.json();
+  return (data.playlists?.items || []).map(p => ({
+    playlistId: p.id,
+    playlistName: p.name,
+    img: p.images?.[0]?.url,
+    description: p.description,
+    owner: p.owner?.display_name,
+  }));
+},
 
   async getPlaylistTracks(playlistId) {
     const token = await this.getAccessToken();

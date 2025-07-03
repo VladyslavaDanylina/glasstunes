@@ -1,10 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import BottomNav from "../components/BottomNav";
-import "./Home.css"; 
+import Spotify from "../services/Spotify";
+import "./Home.css";
 
 export default function Home({ userProfile }) {
+  const [playlists, setPlaylists] = useState([]);
+  const [featured, setFeatured] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [categoryPlaylists, setCategoryPlaylists] = useState({});
   const navigate = useNavigate();
+
+  // 1. User playlists
+  useEffect(() => {
+    Spotify.getUserPlaylists().then(setPlaylists);
+  }, []);
+
+  // 2. Featured ("For you")
+  useEffect(() => {
+    Spotify.getFeaturedPlaylists().then(setFeatured);
+  }, []);
+
+  // 3. Categories and their playlists
+  useEffect(() => {
+    async function fetchCategoriesAndPlaylists() {
+      const cats = await Spotify.getCategories();
+      setCategories(cats);
+      // Fetch playlists for each category (only first 3 for demo)
+      for (const c of cats.slice(0, 3)) {
+        Spotify.getPlaylistsByCategory(c.id).then(pls => {
+          setCategoryPlaylists(prev => ({ ...prev, [c.id]: pls }));
+        });
+      }
+    }
+    fetchCategoriesAndPlaylists();
+  }, []);
 
   return (
     <div className="dashboard-container">
@@ -24,45 +54,78 @@ export default function Home({ userProfile }) {
         </div>
       </div>
 
+      {/* 1. YOUR PLAYLISTS */}
       <div className="dashboard-section">
         <div className="dashboard-section-title">
           Pick up where you left off
-          <button className="dashboard-viewall-btn" onClick={() => navigate("/library")}>View all</button>
+          <button className="dashboard-viewall-btn" onClick={() => navigate("/library")}>
+            View all
+          </button>
         </div>
         <div className="dashboard-playlists-row">
-          <DashboardCard title="Chill Study Beats" subtitle="Chill" img="/cover1.jpg" onClick={() => navigate("/album/1")} />
-          <DashboardCard title="Rainy Morning" subtitle="Jazzy" img="/cover2.jpg" onClick={() => navigate("/album/2")} />
-          <DashboardCard title="Skate Punk" subtitle="Weekend" img="/cover3.jpg" onClick={() => navigate("/album/3")} />
+          {playlists.length === 0 ? (
+            <div style={{ color: "#aaa" }}>No playlists found.</div>
+          ) : (
+            playlists.slice(0, 3).map(pl => (
+              <DashboardCard
+                key={pl.playlistId}
+                title={pl.playlistName}
+                subtitle={pl.owner}
+                img={pl.img || "/cover-default.jpg"}
+                onClick={() => navigate(`/playlist/${pl.playlistId}`)}
+              />
+            ))
+          )}
         </div>
       </div>
 
+      {/* 2. FEATURED (FOR YOU) */}
       <div className="dashboard-section">
         <div className="dashboard-section-title">
           For you
-          <button className="dashboard-viewall-btn" onClick={() => navigate("/library")}>View all</button>
         </div>
         <div className="dashboard-playlists-row">
-          <DashboardCard title="Your Top Artists" subtitle="Your Top" img="/cover4.jpg" onClick={() => navigate("/artist/1")} />
-          <DashboardCard title="Best Of Pop Music" subtitle="Best Of" img="/cover5.jpg" onClick={() => navigate("/album/5")} />
+          {featured.length === 0 ? (
+            <div style={{ color: "#aaa" }}>Loading...</div>
+          ) : (
+            featured.slice(0, 3).map(pl => (
+              <DashboardCard
+                key={pl.playlistId}
+                title={pl.playlistName}
+                subtitle={pl.owner}
+                img={pl.img || "/cover-default.jpg"}
+                onClick={() => navigate(`/playlist/${pl.playlistId}`)}
+              />
+            ))
+          )}
         </div>
       </div>
 
-      <div className="dashboard-section">
-        <div className="dashboard-section-title">Popular songs</div>
-        <div className="dashboard-songs-list">
-          <SongRow name="Cali Living" artist="Tom" img="/avatar1.jpg" onClick={() => navigate("/song/101")} />
-          <SongRow name="On The Top" artist="Alma" img="/avatar2.jpg" onClick={() => navigate("/song/102")} />
-          <SongRow name="Together" artist="Jonas&Jonas" img="/avatar3.jpg" onClick={() => navigate("/song/103")} />
-          <SongRow name="Love Is Blind" artist="Sisa Sklovska" img="/avatar4.jpg" onClick={() => navigate("/song/104")} />
+      {/* 3. GENRE/CATEGORY PLAYLISTS */}
+      {categories.slice(0, 3).map(cat => (
+        <div className="dashboard-section" key={cat.id}>
+          <div className="dashboard-section-title">
+            {cat.name}
+          </div>
+          <div className="dashboard-playlists-row">
+            {(categoryPlaylists[cat.id] || []).slice(0, 3).map(pl => (
+              <DashboardCard
+                key={pl.playlistId}
+                title={pl.playlistName}
+                subtitle={pl.owner}
+                img={pl.img || "/cover-default.jpg"}
+                onClick={() => navigate(`/playlist/${pl.playlistId}`)}
+              />
+            ))}
+          </div>
         </div>
-      </div>
+      ))}
 
       <BottomNav />
     </div>
   );
 }
 
-// Карточка подборки
 function DashboardCard({ title, subtitle, img, onClick }) {
   return (
     <div className="dashboard-card" onClick={onClick} style={{ cursor: "pointer" }}>
@@ -71,31 +134,6 @@ function DashboardCard({ title, subtitle, img, onClick }) {
         <div className="dashboard-card-subtitle">{subtitle}</div>
         <div className="dashboard-card-title">{title}</div>
       </div>
-    </div>
-  );
-}
-
-// Одна строка с песней
-function SongRow({ name, artist, img, onClick }) {
-  const [liked, setLiked] = useState(false);
-
-  return (
-    <div className="dashboard-song-row" onClick={onClick} style={{ cursor: "pointer" }}>
-      <img src={img} alt={name} className="dashboard-song-avatar" />
-      <div className="dashboard-song-info">
-        <div className="dashboard-song-name">{name}</div>
-        <div className="dashboard-song-artist">{artist}</div>
-      </div>
-      <button
-        className="dashboard-song-like"
-        onClick={e => {
-          e.stopPropagation(); // Чтобы не было перехода на song при клике по лайку
-          setLiked(l => !l);
-        }}
-      >
-        {liked ? "💜" : "🤍"}
-      </button>
-      <span className="dashboard-song-play">▶️</span>
     </div>
   );
 }
