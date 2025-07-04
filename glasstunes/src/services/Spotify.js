@@ -121,22 +121,34 @@ async getUserPlaylists() {
 },
 
 // 1. Featured ("Made For You") playlists
-async getFeaturedPlaylists() {
+async getFeaturedPlaylists({ limit = 20, offset = 0, locale = "en_US" } = {}) {
   const token = await this.getAccessToken();
   if (!token) return [];
-  const response = await fetch("https://api.spotify.com/v1/browse/featured-playlists", {
-    headers: { Authorization: `Bearer ${token}` }
+
+  const params = new URLSearchParams({
+    limit: limit.toString(),
+    offset: offset.toString(),
+    locale,
   });
+
+  const response = await fetch(
+    `https://api.spotify.com/v1/browse/featured-playlists?${params}`,
+    {
+      headers: { Authorization: `Bearer ${token}` }
+    }
+  );
   if (!response.ok) {
     console.error("Failed to fetch featured playlists", response.status);
     return [];
   }
   const json = await response.json();
+  // "json.playlists.items" is the array of playlists
   return (json.playlists?.items || []).map(p => ({
     playlistId: p.id,
     playlistName: p.name,
     img: p.images?.[0]?.url,
     owner: p.owner?.display_name,
+    description: p.description,
   }));
 },
 

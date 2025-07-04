@@ -8,6 +8,7 @@ import "./Home.css";
 export default function Home({ userProfile }) {
   const [playlists, setPlaylists] = useState([]);
   const [featured, setFeatured] = useState([]);
+
   const [categories, setCategories] = useState([]);
   const [categoryPlaylists, setCategoryPlaylists] = useState({});
   const navigate = useNavigate();
@@ -19,8 +20,9 @@ export default function Home({ userProfile }) {
 
   // 2. Featured ("For you")
   useEffect(() => {
-    Spotify.getFeaturedPlaylists().then(setFeatured);
-  }, []);
+  Spotify.getFeaturedPlaylists().then(setFeatured);
+}, []);
+
 
   // 3. Categories and their playlists
   useEffect(() => {
@@ -82,28 +84,22 @@ export default function Home({ userProfile }) {
 
       {/* 2. FEATURED (FOR YOU) */}
       <div className="dashboard-section">
-        <div className="dashboard-section-title">
-          For you
-          <button className="dashboard-viewall-btn" onClick={() => navigate("/featured")}>
-            View all
-          </button>
-        </div>
-        <div className="dashboard-playlists-row">
-          {featured.length === 0 ? (
-            <div style={{ color: "#aaa" }}>Loading...</div>
-          ) : (
-            featured.slice(0, 3).map(pl => (
-              <DashboardCard
-                key={pl.playlistId}
-                title={pl.playlistName}
-                subtitle={pl.owner}
-                img={pl.img || "/cover-default.jpg"}
-                onClick={() => navigate(`/playlist/${pl.playlistId}`)}
-              />
-            ))
-          )}
-        </div>
-      </div>
+  <div className="dashboard-section-title">For you</div>
+  <div className="dashboard-playlists-row">
+    {featured.length === 0
+      ? <div style={{ color: "#aaa" }}>Loading...</div>
+      : featured.slice(0, 3).map(pl => (
+          <DashboardCard
+            key={pl.playlistId}
+            title={pl.playlistName}
+            subtitle={pl.owner}
+            img={pl.img || "/cover-default.jpg"}
+            onClick={() => navigate(`/playlist/${pl.playlistId}`)}
+          />
+        ))}
+  </div>
+</div>
+
 
       {/* 3. GENRE/CATEGORY PLAYLISTS */}
       {categories.slice(0, 3).map(cat => (
