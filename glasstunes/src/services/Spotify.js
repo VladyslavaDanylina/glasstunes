@@ -101,6 +101,7 @@ const Spotify = {
 
 async getUserPlaylists() {
   const token = await this.getAccessToken();
+  console.log("Token used for user playlists:", token);
   if (!token) return [];
   const response = await fetch("https://api.spotify.com/v1/me/playlists", {
     headers: { Authorization: `Bearer ${token}` },
@@ -123,19 +124,17 @@ async getUserPlaylists() {
 // 1. Featured ("Made For You") playlists
 async getFeaturedPlaylists() {
   const token = await this.getAccessToken();
+   console.log("Token used for featured playlists:", token);
   if (!token) return [];
-  const response = await fetch("https://api.spotify.com/v1/browse/featured-playlists",
-    {
-      headers: { Authorization: `Bearer ${token}` }
-    }
-  );
+  console.log("Token used for featured:", token);
+  const response = await fetch("https://api.spotify.com/v1/browse/featured-playlists", {
+    headers: { Authorization: `Bearer ${token}` }
+  });
   if (!response.ok) {
     console.error("Failed to fetch featured playlists", response.status);
     return [];
   }
   const json = await response.json();
-  console.log("FEATURED JSON", json);
-  // "json.playlists.items" is the array of playlists
   return (json.playlists?.items || []).map(p => ({
     playlistId: p.id,
     playlistName: p.name,
@@ -144,6 +143,8 @@ async getFeaturedPlaylists() {
     description: p.description,
   }));
 },
+
+
 // 2. Categories list
 async getCategories() {
   const token = await this.getAccessToken();
