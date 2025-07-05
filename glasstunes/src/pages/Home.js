@@ -7,7 +7,7 @@ import "./Home.css";
 
 export default function Home({ userProfile }) {
   const [playlists, setPlaylists] = useState([]);
-  const [featured, setFeatured] = useState([]);
+  const [featured, setFeatured] = useState(null);
 
   const [categories, setCategories] = useState([]);
   const [categoryPlaylists, setCategoryPlaylists] = useState({});
@@ -81,24 +81,29 @@ export default function Home({ userProfile }) {
         </div>
       </div>
 
-      {/* 2. FEATURED (FOR YOU) */}
-      <div className="dashboard-section">
+{/* 2. FEATURED (FOR YOU) */}
+<div className="dashboard-section">
   <div className="dashboard-section-title">For you</div>
+  <button className="dashboard-viewall-btn" onClick={() => navigate("/featured")}>
+            View all
+          </button>
   <div className="dashboard-featured-row">
-          {featured.length === 0 ? (
-            <div style={{ color: "#aaa" }}>No playlists found.</div>
-          ) : (
-            featured.slice(0, 3).map(pl => (
-              <DashboardCard
-                key={pl.playlistId}
-                title={pl.playlistName}
-                subtitle={pl.owner}
-                img={pl.img || "/cover-default.jpg"}
-                onClick={() => navigate(`/playlist/${pl.playlistId}`)}
-              />
-            ))
-          )}
-        </div>
+    {featured === null ? (
+      <div style={{ color: "#aaa" }}>Loading…</div>
+    ) : featured.length === 0 ? (
+      <div style={{ color: "#aaa" }}>No featured playlists.</div>
+    ) : (
+      featured.slice(0, 3).map(pl => (
+        <DashboardCard
+          key={pl.playlistId}
+          title={pl.playlistName}
+          subtitle={pl.owner}
+          img={pl.img || "/cover-default.jpg"}
+          onClick={() => navigate(`/playlist/${pl.playlistId}`)}
+        />
+      ))
+    )}
+  </div>
 </div>
 
 
