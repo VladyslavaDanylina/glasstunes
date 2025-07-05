@@ -20,9 +20,11 @@ export default function Home({ userProfile }) {
 
   // 2. Featured ("For you")
   useEffect(() => {
-  Spotify.getFeaturedPlaylists().then(setFeatured);
+  Spotify.getFeaturedPlaylists().then(data => {
+    console.log("FEATURED DATA:", data);
+    setFeatured(data);
+  });
 }, []);
-
 
   // 3. Categories and their playlists
   useEffect(() => {
@@ -85,19 +87,21 @@ export default function Home({ userProfile }) {
       {/* 2. FEATURED (FOR YOU) */}
       <div className="dashboard-section">
   <div className="dashboard-section-title">For you</div>
-  <div className="dashboard-playlists-row">
-    {featured.length === 0
-      ? <div style={{ color: "#aaa" }}>Loading...</div>
-      : featured.slice(0, 3).map(pl => (
-          <DashboardCard
-            key={pl.playlistId}
-            title={pl.playlistName}
-            subtitle={pl.owner}
-            img={pl.img || "/cover-default.jpg"}
-            onClick={() => navigate(`/playlist/${pl.playlistId}`)}
-          />
-        ))}
-  </div>
+  <div className="dashboard-featured-row">
+          {featured.length === 0 ? (
+            <div style={{ color: "#aaa" }}>No playlists found.</div>
+          ) : (
+            featured.slice(0, 3).map(pl => (
+              <DashboardCard
+                key={pl.playlistId}
+                title={pl.playlistName}
+                subtitle={pl.owner}
+                img={pl.img || "/cover-default.jpg"}
+                onClick={() => navigate(`/playlist/${pl.playlistId}`)}
+              />
+            ))
+          )}
+        </div>
 </div>
 
 

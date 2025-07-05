@@ -142,6 +142,7 @@ async getFeaturedPlaylists({ limit = 20, offset = 0, locale = "en_US" } = {}) {
     return [];
   }
   const json = await response.json();
+  console.log("FEATURED JSON", json);
   // "json.playlists.items" is the array of playlists
   return (json.playlists?.items || []).map(p => ({
     playlistId: p.id,

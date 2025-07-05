@@ -51,6 +51,11 @@
   gap: 18px;
   margin-bottom: 10px;
 }
+.dashboard-featured-row {
+  display: flex;
+  gap: 18px;
+  margin-bottom: 10px;
+}
 .dashboard-card {
   position: relative;
   width: 190px;
