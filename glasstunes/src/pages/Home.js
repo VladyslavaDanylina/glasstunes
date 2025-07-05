@@ -42,6 +42,7 @@ export default function Home({ userProfile }) {
       setCategories(cats);
       for (const c of cats.slice(0, 3)) {
         Spotify.getCategoryPlaylists(c.id).then(pls => {
+          console.log("Playlists for category", c.id, pls);
           setCategoryPlaylists(prev => ({ ...prev, [c.id]: pls }));
         });
       }

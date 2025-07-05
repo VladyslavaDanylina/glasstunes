@@ -171,7 +171,7 @@ async getFeaturedPlaylists() {
 async getCategories() {
   const token = await this.getAccessToken();
   if (!token) return [];
-  const res = await fetch("https://api.spotify.com/v1/browse/categories?country=US&limit=6", {
+  const res = await fetch("https://api.spotify.com/v1/browse/categories?country=US&limit=8", {
     headers: { Authorization: `Bearer ${token}` }
   });
   const data = await res.json();
@@ -188,8 +188,12 @@ async getCategoryPlaylists(categoryId) {
   const response = await fetch(`https://api.spotify.com/v1/browse/categories/${categoryId}/playlists`, {
     headers: { Authorization: `Bearer ${token}` }
   });
-  if (!response.ok) return [];
+    if (!response.ok) {
+    console.log("Failed to fetch playlists for", categoryId, response.status);
+    return [];
+  }
   const json = await response.json();
+  console.log("Fetched playlists", json);
   return (json.playlists?.items || []).map(p => ({
     playlistId: p.id,
     playlistName: p.name,
