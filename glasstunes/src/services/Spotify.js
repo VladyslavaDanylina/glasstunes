@@ -124,8 +124,7 @@ async getUserPlaylists() {
 async getFeaturedPlaylists() {
   const token = await this.getAccessToken();
   if (!token) return [];
-  const response = await fetch(
-    `https://api.spotify.com/v1/browse/featured-playlists`,
+  const response = await fetch("https://api.spotify.com/v1/browse/featured-playlists",
     {
       headers: { Authorization: `Bearer ${token}` }
     }

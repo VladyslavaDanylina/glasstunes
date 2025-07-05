@@ -83,10 +83,12 @@ export default function Home({ userProfile }) {
 
 {/* 2. FEATURED (FOR YOU) */}
 <div className="dashboard-section">
-  <div className="dashboard-section-title">For you</div>
-  <button className="dashboard-viewall-btn" onClick={() => navigate("/featured")}>
+  <div className="dashboard-section-title">For you
+    <button className="dashboard-viewall-btn" onClick={() => navigate("/featured")}>
             View all
           </button>
+  </div>
+  
   <div className="dashboard-featured-row">
     {featured === null ? (
       <div style={{ color: "#aaa" }}>Loading…</div>
