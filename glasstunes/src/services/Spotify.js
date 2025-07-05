@@ -160,26 +160,6 @@ async getCategories() {
   }));
 },
 
-
-async getCategoryPlaylists(categoryId) {   // <---- rename here
-  const token = await this.getAccessToken();
-  if (!token || !categoryId) return [];
-  const response = await fetch(`https://api.spotify.com/v1/browse/categories/${categoryId}/playlists`, {
-    headers: { Authorization: `Bearer ${token}` }
-  });
-  if (!response.ok) {
-    console.error("Failed to fetch category playlists", response.status);
-    return [];
-  }
-  const json = await response.json();
-  return (json.playlists?.items || []).map(p => ({
-    playlistId: p.id,
-    playlistName: p.name,
-    img: p.images?.[0]?.url,
-    owner: p.owner?.display_name,
-  }));
-},
-
   async getPlaylistTracks(playlistId) {
     const token = await this.getAccessToken();
     if (!token || !playlistId) return [];

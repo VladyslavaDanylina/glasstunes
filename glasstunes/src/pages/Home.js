@@ -9,8 +9,8 @@ export default function Home({ userProfile }) {
   const [playlists, setPlaylists] = useState([]);
   const [featured, setFeatured] = useState(null);
 
-  const [categories, setCategories] = useState([]);
-  const [categoryPlaylists, setCategoryPlaylists] = useState({});
+
+
   const navigate = useNavigate();
 
   // 1. User playlists
@@ -23,20 +23,6 @@ export default function Home({ userProfile }) {
   Spotify.getFeaturedPlaylists().then(setFeatured);
 }, []);
 
-  // 3. Categories and their playlists
-  useEffect(() => {
-    async function fetchCategoriesAndPlaylists() {
-      const cats = await Spotify.getCategories();
-      setCategories(cats);
-      // Fetch playlists for each category (only first 3 for demo)
-      for (const c of cats.slice(0, 3)) {
-        Spotify.getCategoryPlaylists(c.id).then(pls => {
-          setCategoryPlaylists(prev => ({ ...prev, [c.id]: pls }));
-        });
-      }
-    }
-    fetchCategoriesAndPlaylists();
-  }, []);
 
   return (
     <div className="dashboard-container">
@@ -109,28 +95,7 @@ export default function Home({ userProfile }) {
 </div>
 
 
-      {/* 3. GENRE/CATEGORY PLAYLISTS */}
-      {categories.slice(0, 3).map(cat => (
-        <div className="dashboard-section" key={cat.id}>
-          <div className="dashboard-section-title">
-            {cat.name}
-            <button className="dashboard-viewall-btn" onClick={() => navigate(`/category/${cat.id}`)}>
-  View all
-</button>
-          </div>
-          <div className="dashboard-playlists-row">
-            {(categoryPlaylists[cat.id] || []).slice(0, 3).map(pl => (
-              <DashboardCard
-                key={pl.playlistId}
-                title={pl.playlistName}
-                subtitle={pl.owner}
-                img={pl.img || "/cover-default.jpg"}
-                onClick={() => navigate(`/playlist/${pl.playlistId}`)}
-              />
-            ))}
-          </div>
-        </div>
-      ))}
+      
 
       <BottomNav />
     </div>
