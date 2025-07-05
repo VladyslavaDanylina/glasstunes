@@ -127,7 +127,7 @@ async getFeaturedPlaylists() {
    console.log("Token used for featured playlists:", token);
   if (!token) return [];
   console.log("Token used for featured:", token);
-  const response = await fetch("https://api.spotify.com/v1/browse/featured-playlists", {
+  const response = await fetch("https://api.spotify.com/v1/browse/featured-playlists?country=US&limit=8", {
     headers: { Authorization: `Bearer ${token}` }
   });
   if (!response.ok) {
