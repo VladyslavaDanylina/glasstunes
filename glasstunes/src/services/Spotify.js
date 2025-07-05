@@ -168,18 +168,33 @@ async getFeaturedPlaylists() {
 },
 */
 
-// 2. Categories list
 async getCategories() {
   const token = await this.getAccessToken();
   if (!token) return [];
-  const res = await fetch("https://api.spotify.com/v1/browse/categories?country=US&limit=8", {
-    headers: { Authorization: `Bearer ${token}` },
+  const res = await fetch("https://api.spotify.com/v1/browse/categories?country=US&limit=6", {
+    headers: { Authorization: `Bearer ${token}` }
   });
   const data = await res.json();
   return (data.categories?.items || []).map(c => ({
     id: c.id,
     name: c.name,
     img: c.icons?.[0]?.url,
+  }));
+},
+
+async getCategoryPlaylists(categoryId) {
+  const token = await this.getAccessToken();
+  if (!token || !categoryId) return [];
+  const response = await fetch(`https://api.spotify.com/v1/browse/categories/${categoryId}/playlists`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  if (!response.ok) return [];
+  const json = await response.json();
+  return (json.playlists?.items || []).map(p => ({
+    playlistId: p.id,
+    playlistName: p.name,
+    img: p.images?.[0]?.url,
+    owner: p.owner?.display_name,
   }));
 },
 
@@ -281,8 +296,63 @@ async getCategories() {
       body: JSON.stringify({ uris: trackUris }),
     });
   },
+// Get user's top artists
+async getUserTopArtists() {
+  const token = await this.getAccessToken();
+  if (!token) return [];
+  const res = await fetch("https://api.spotify.com/v1/me/top/artists?limit=5", {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  const json = await res.json();
+  return (json.items || []).map(artist => artist.id);
+},
+
+// Get user's top tracks
+async getUserTopTracks() {
+  const token = await this.getAccessToken();
+  if (!token) return [];
+  const res = await fetch("https://api.spotify.com/v1/me/top/tracks?limit=5", {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  const json = await res.json();
+  return (json.items || []).map(track => track.id);
+},
+
+// Recommendations by seeds
+async getRecommendations({ seed_artists = "", seed_tracks = "", seed_genres = "" }) {
+  const token = await this.getAccessToken();
+  if (!token) return [];
+  const params = new URLSearchParams({
+    limit: "20",
+    seed_artists,
+    seed_tracks,
+    seed_genres
+  });
+  const res = await fetch(`https://api.spotify.com/v1/recommendations?${params}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  const json = await res.json();
+  return (json.tracks || []).map(track => ({
+    id: track.id,
+    name: track.name,
+    artist: track.artists[0]?.name,
+    albumCover: track.album.images?.[0]?.url,
+    uri: track.uri
+  }));
+},
+
+async getAvailableGenres() {
+  const token = await this.getAccessToken();
+  if (!token) return [];
+  const res = await fetch("https://api.spotify.com/v1/recommendations/available-genre-seeds", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  const json = await res.json();
+  return json.genres || [];
+}
 
 };
+
 
   // (другие методы getCurrentUserId, search, savePlaylist и т.д. — как раньше)
 

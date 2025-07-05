@@ -5,12 +5,24 @@ import Spotify from "../services/Spotify";
 import DashboardCard from "../components/DashboardCard";
 import "./Home.css";
 
+function RecommendedTrackRow({ name, artist, img, onClick }) {
+  return (
+    <div className="dashboard-song-row" onClick={onClick} style={{ cursor: "pointer" }}>
+      <img src={img} alt={name} className="dashboard-song-avatar" />
+      <div className="dashboard-song-info">
+        <div className="dashboard-song-name">{name}</div>
+        <div className="dashboard-song-artist">{artist}</div>
+      </div>
+      <span className="dashboard-song-play">▶️</span>
+    </div>
+  );
+}
+
 export default function Home({ userProfile }) {
   const [playlists, setPlaylists] = useState([]);
-  const [featured, setFeatured] = useState([]);
-
-
-
+  const [recommended, setRecommended] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [categoryPlaylists, setCategoryPlaylists] = useState({});
   const navigate = useNavigate();
 
   // 1. User playlists
@@ -18,11 +30,24 @@ export default function Home({ userProfile }) {
     Spotify.getUserPlaylists().then(setPlaylists);
   }, []);
 
-  // 2. Featured ("For you")
- useEffect(() => {
-  Spotify.getFeaturedPlaylists().then(setFeatured);
-}, []);
+  // 2. Recommended tracks
+  useEffect(() => {
+    Spotify.getRecommendations({ seed_genres: "pop" }).then(setRecommended);
+  }, []);
 
+  // 3. Categories and their playlists
+  useEffect(() => {
+    async function fetchCategoriesAndPlaylists() {
+      const cats = await Spotify.getCategories();
+      setCategories(cats);
+      for (const c of cats.slice(0, 3)) {
+        Spotify.getCategoryPlaylists(c.id).then(pls => {
+          setCategoryPlaylists(prev => ({ ...prev, [c.id]: pls }));
+        });
+      }
+    }
+    fetchCategoriesAndPlaylists();
+  }, []);
 
   return (
     <div className="dashboard-container">
@@ -67,38 +92,55 @@ export default function Home({ userProfile }) {
         </div>
       </div>
 
-{/* 2. FEATURED (FOR YOU) */}
-<div className="dashboard-section">
-  <div className="dashboard-section-title">For you
-    <button className="dashboard-viewall-btn" onClick={() => navigate("/featured")}>
+      {/* 2. CATEGORIES */}
+      {categories.slice(0, 3).map(cat => (
+        <div className="dashboard-section" key={cat.id}>
+          <div className="dashboard-section-title">
+            {cat.name}
+            <button className="dashboard-viewall-btn" onClick={() => navigate(`/category/${cat.id}`)}>
+              View all
+            </button>
+          </div>
+          <div className="dashboard-playlists-row">
+            {(categoryPlaylists[cat.id] || []).slice(0, 3).map(pl => (
+              <DashboardCard
+                key={pl.playlistId}
+                title={pl.playlistName}
+                subtitle={pl.owner}
+                img={pl.img || "/cover-default.jpg"}
+                onClick={() => navigate(`/playlist/${pl.playlistId}`)}
+              />
+            ))}
+          </div>
+        </div>
+      ))}
+
+      {/* 3. RECOMMENDED TRACKS */}
+      <div className="dashboard-section">
+        <div className="dashboard-section-title">
+          Recommended For You
+          <button className="dashboard-viewall-btn" onClick={() => navigate("/recommended")}>
             View all
           </button>
-  </div>
-  
-  <div className="dashboard-featured-row">
-    {featured === null ? (
-      <div style={{ color: "#aaa" }}>Loading…</div>
-    ) : featured.length === 0 ? (
-      <div style={{ color: "#aaa" }}>No featured playlists.</div>
-    ) : (
-      featured.slice(0, 3).map(pl => (
-        <DashboardCard
-          key={pl.playlistId}
-          title={pl.playlistName}
-          subtitle={pl.owner}
-          img={pl.img || "/cover-default.jpg"}
-          onClick={() => navigate(`/playlist/${pl.playlistId}`)}
-        />
-      ))
-    )}
-  </div>
-</div>
-
-
-      
+        </div>
+        <div className="dashboard-songs-list">
+          {recommended.length === 0 ? (
+            <div style={{ color: "#aaa" }}>Loading…</div>
+          ) : (
+            recommended.map(track => (
+              <RecommendedTrackRow
+                key={track.id}
+                name={track.name}
+                artist={track.artist}
+                img={track.albumCover || "/cover-default.jpg"}
+                onClick={() => navigate(`/track/${track.id}`)}
+              />
+            ))
+          )}
+        </div>
+      </div>
 
       <BottomNav />
     </div>
   );
 }
-

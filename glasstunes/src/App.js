@@ -15,7 +15,7 @@ import ProfilePage from "./pages/ProfilePage";
 import NotFound from "./pages/NotFound";
 import Spotify from "./services/Spotify";
 import LibraryPage from "./pages/LibraryPage";
-import FeaturedPage from "./pages/FeaturedPage";
+import RecommendedPage from "./pages/RecommendedPage";
 import CategoryPage from "./pages/CategoryPage";
 
 function AppWrapper() {
@@ -87,7 +87,7 @@ function App({ currentPath }) {
           }
         />
         <Route path="/library" element={<LibraryPage />} />
-<Route path="/featured" element={<FeaturedPage />} />
+<Route path="/recommended" element={<RecommendedPage />} />
 <Route path="/category/:id" element={<CategoryPage />} />
         <Route
           path="/profile"
