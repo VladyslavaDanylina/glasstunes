@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/glasstunes/static/css/main.5386512b.css",
-    "main.js": "/glasstunes/static/js/main.799c4954.js",
+    "main.css": "/glasstunes/static/css/main.c25b06e5.css",
+    "main.js": "/glasstunes/static/js/main.687332f0.js",
     "static/js/453.1c26b3b9.chunk.js": "/glasstunes/static/js/453.1c26b3b9.chunk.js",
     "static/media/welcome-image.png": "/glasstunes/static/media/welcome-image.6679210c84923902a947.png",
     "index.html": "/glasstunes/index.html",
-    "main.5386512b.css.map": "/glasstunes/static/css/main.5386512b.css.map",
-    "main.799c4954.js.map": "/glasstunes/static/js/main.799c4954.js.map",
+    "main.c25b06e5.css.map": "/glasstunes/static/css/main.c25b06e5.css.map",
+    "main.687332f0.js.map": "/glasstunes/static/js/main.687332f0.js.map",
     "453.1c26b3b9.chunk.js.map": "/glasstunes/static/js/453.1c26b3b9.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.5386512b.css",
-    "static/js/main.799c4954.js"
+    "static/css/main.c25b06e5.css",
+    "static/js/main.687332f0.js"
   ]
 }
