@@ -19,11 +19,8 @@ export default function Home({ userProfile }) {
   }, []);
 
   // 2. Featured ("For you")
-  useEffect(() => {
-  Spotify.getFeaturedPlaylists().then(data => {
-    console.log("FEATURED DATA:", data);
-    setFeatured(data);
-  });
+ useEffect(() => {
+  Spotify.getFeaturedPlaylists().then(setFeatured);
 }, []);
 
   // 3. Categories and their playlists

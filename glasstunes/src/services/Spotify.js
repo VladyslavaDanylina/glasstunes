@@ -121,18 +121,11 @@ async getUserPlaylists() {
 },
 
 // 1. Featured ("Made For You") playlists
-async getFeaturedPlaylists({ limit = 20, offset = 0, locale = "en_US" } = {}) {
+async getFeaturedPlaylists() {
   const token = await this.getAccessToken();
   if (!token) return [];
-
-  const params = new URLSearchParams({
-    limit: limit.toString(),
-    offset: offset.toString(),
-    locale,
-  });
-
   const response = await fetch(
-    `https://api.spotify.com/v1/browse/featured-playlists?${params}`,
+    `https://api.spotify.com/v1/browse/featured-playlists`,
     {
       headers: { Authorization: `Bearer ${token}` }
     }
@@ -152,7 +145,6 @@ async getFeaturedPlaylists({ limit = 20, offset = 0, locale = "en_US" } = {}) {
     description: p.description,
   }));
 },
-
 // 2. Categories list
 async getCategories() {
   const token = await this.getAccessToken();
