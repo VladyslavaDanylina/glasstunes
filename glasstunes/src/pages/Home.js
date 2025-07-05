@@ -93,7 +93,7 @@ export default function Home({ userProfile }) {
       </div>
 
       {/* 2. CATEGORIES */}
-      {categories.slice(0, 3).map(cat => (
+      {categories.slice(0, 8).map(cat => (
         <div className="dashboard-section" key={cat.id}>
           <div className="dashboard-section-title">
             {cat.name}
@@ -102,7 +102,7 @@ export default function Home({ userProfile }) {
             </button>
           </div>
           <div className="dashboard-playlists-row">
-            {(categoryPlaylists[cat.id] || []).slice(0, 3).map(pl => (
+            {(categoryPlaylists[cat.id] || []).slice(0, 8).map(pl => (
               <DashboardCard
                 key={pl.playlistId}
                 title={pl.playlistName}

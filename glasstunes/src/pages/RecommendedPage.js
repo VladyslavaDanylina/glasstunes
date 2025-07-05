@@ -35,7 +35,8 @@ export default function RecommendedPage() {
       const recommendations = await Spotify.getRecommendations({
         seed_artists: topArtists.slice(0,2).join(","),
         seed_tracks: topTracks.slice(0,2).join(","),
-        seed_genres,
+        seed_genres: seed_genres,
+        limit: 10, // Limit to 10 tracks
       });
       setTracks(recommendations);
     }
