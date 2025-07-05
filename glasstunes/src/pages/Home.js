@@ -7,7 +7,7 @@ import "./Home.css";
 
 export default function Home({ userProfile }) {
   const [playlists, setPlaylists] = useState([]);
-  const [featured, setFeatured] = useState(null);
+  const [featured, setFeatured] = useState([]);
 
 
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Spotify from "../services/Spotify";
-import DashboardCard from "../components/DashboardCard";
 import { useNavigate } from "react-router-dom";
+import BottomNav from "../components/BottomNav";
 
 export default function FeaturedPage() {
   const [featured, setFeatured] = useState([]);
@@ -12,19 +12,17 @@ export default function FeaturedPage() {
   }, []);
 
   return (
-    <div>
+    <div className="featured-container">
       <h2>Featured Playlists</h2>
-      <div className="dashboard-playlists-row">
+      <div className="dashboard-featured-row">
         {featured.map(pl => (
-          <DashboardCard
-            key={pl.playlistId}
-            title={pl.playlistName}
-            subtitle={pl.owner}
-            img={pl.img || "/cover-default.jpg"}
-            onClick={() => navigate(`/playlist/${pl.playlistId}`)}
-          />
+          <div key={pl.playlistId} className="dashboard-card" onClick={() => navigate(`/playlist/${pl.playlistId}`)}>
+              <img src={pl.img} alt={pl.playlistName} className="dashboard-card-img" />
+              <div className="dashboard-card-title">{pl.playlistName}</div>
+            </div>
         ))}
       </div>
+      <BottomNav />
     </div>
   );
 }
