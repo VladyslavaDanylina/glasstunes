@@ -40,6 +40,7 @@ export default function Home({ userProfile }) {
     async function fetchCategoriesAndPlaylists() {
       const cats = await Spotify.getCategories();
       setCategories(cats);
+       console.log('SPOTIFY CATEGORIES:', cats);
       for (const c of cats.slice(0, 3)) {
         Spotify.getCategoryPlaylists(c.id).then(pls => {
           console.log("Playlists for category", c.id, pls);
